@@ -6,8 +6,9 @@ var logger = require('morgan');
 var cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-testAPIRouter = require("./routes/testAPI");
+var testAPIRouter = require("./routes/testAPI"); // Poprawione przypisanie
 var app = express();
+var videoRoute = require('./videoRoute');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -15,7 +16,7 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(cors());
+app.use(cors()); // Tutaj użyte już cors
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,6 +24,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
+
+// Użyj routingu obsługującego pliki wideo
+app.use('/video', videoRoute);
+
+// Inne trasy i konfiguracje
+
+app.listen(9000, () => {
+  console.log('Serwer API działa na porcie 9000');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
