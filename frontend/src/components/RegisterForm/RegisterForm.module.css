@@ -1,0 +1,37 @@
+.registerFormWrapper {
+  max-width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.label {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.error {
+  color: red;
+}
+
+.switchLink {
+  color: #646cff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.switchLink:hover {
+  text-decoration: none; /* Remove underline on hover if desired */
+}
