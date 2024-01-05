@@ -1,0 +1,70 @@
+// You can import them in mongoDB after modifying here
+// Copy from "{" to "}"
+
+{
+  "videos": {
+    "easy": "https://www.youtube.com/watch?v=Kk8zXrCKubw",
+    "medium": "https://www.youtube.com/watch?v=bnjptlWRbPE",
+    "hard": "https://www.youtube.com/watch?v=7w45aUU5h5Y"
+  },
+  "quizes": {
+    "easy": {
+      "questions": [
+        {
+          "question": "(e5) 2 + 2 =",
+          "answers": ["1", "2", "4", "8"],
+          "correctAnswerIndex": 2
+        },
+        {
+          "question": "(e5) 3 + 3 =",
+          "answers": ["8", "5", "6", "0"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "(e5) 4 + 4 =",
+          "answers": ["1", "8", "4", "7"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    "medium": {
+      "questions": [
+        {
+          "question": "(m5) 2 * 2 =",
+          "answers": ["1", "2", "4", "8"],
+          "correctAnswerIndex": 2
+        },
+        {
+          "question": "(m5) 3 * 3 =",
+          "answers": ["8", "9", "6", "0"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "(m5) 4 * 4 =",
+          "answers": ["1", "8", "4", "16"],
+          "correctAnswerIndex": 3
+        }
+      ]
+    },
+    "hard": {
+      "questions": [
+        {
+          "question": "(h5) 2 / 2 =",
+          "answers": ["1", "2", "4", "8"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "(h5) 3 / 3 =",
+          "answers": ["8", "1", "6", "0"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "(h5) 4 / 4 =",
+          "answers": ["4", "8", "1", "7"],
+          "correctAnswerIndex": 2
+        }
+      ]
+    }
+  },
+  "tutorialId": { "$numberInt": "4" }
+}

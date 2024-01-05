@@ -1,21 +1,24 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export type NextTutorialResponse = {
-  tutorialId: number
-  video: string
+  name: string;
+  tutorialId: number;
+  video: string;
   quiz: {
-    questions: string[]
-    answers: string[]
-  }
-}
+    questions: {
+      question: string;
+      answers: string[];
+      correctAnswerIndex: number;
+    }[];
+  };
+};
 
 export const getNextTutorial = async (): Promise<NextTutorialResponse> => {
   try {
-    // Retrieve the JWT token from wherever it is stored (e.g., local storage)
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
 
     if (!token) {
-      throw new Error('JWT token not found')
+      throw new Error('JWT token not found');
     }
 
     const response = await axios.get<NextTutorialResponse>(
@@ -25,10 +28,56 @@ export const getNextTutorial = async (): Promise<NextTutorialResponse> => {
           Authorization: `Bearer ${token}`,
         },
       }
-    )
+    );
 
-    return response.data
+    return response.data;
   } catch (error) {
-    throw new Error('An error occurred, please try again later')
+    throw new Error('An error occurred, please try again later');
+  }
+};
+
+export const submitQuiz = async (howManyCorrect: number): Promise<void> => {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('JWT token not found');
+    }
+
+    await axios.post(
+      '/api/users/submitAnswers',
+      {
+        howManyCorrect,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    throw new Error('An error occurred, please try again later');
+  }
+};
+
+export const resetProgress = async (): Promise<void> => {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('JWT token not found');
+    }
+
+    await axios.post(
+      '/api/users/resetProgress',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    throw new Error('An error occurred, please try again later');
   }
 }

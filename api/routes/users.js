@@ -52,7 +52,7 @@ router.post('/submitAnswers', authMiddleware, async (req, res) => {
 
     switch (howManyCorrect) {
       case 0:
-        if(user.level.difficulty > 0) {
+        if (user.level.difficulty > 0) {
           user.level.difficulty -= 1;
         }
         break;
@@ -60,7 +60,7 @@ router.post('/submitAnswers', authMiddleware, async (req, res) => {
       case 2:
         break;
       case 3:
-        if(user.level.difficulty < 2) {
+        if (user.level.difficulty < 2) {
           user.level.difficulty += 1;
         }
         break;
@@ -79,13 +79,42 @@ router.post('/submitAnswers', authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/getNextTutorial', authMiddleware, async (req, res) => {
+router.post('/resetProgress', authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
 
     // Fetch user details from the database
     const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    user.level.progress = 0;
+    user.level.difficulty = 1;
+
+    await user.save();
+
+    // Return user details (excluding sensitive information like password)
+    const { _id, username, level } = user;
+    res.json({ _id, username, level });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/getNextTutorial', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
     const tutorial = await Tutorial.findOne({ tutorialId: user.level.progress + 1 });
+
+    if (!tutorial) {
+      // return info that there are no more tutorials
+      return res.json({ tutorialId: -1 });
+    }
 
     let nextTutorial = null;
 
@@ -93,6 +122,7 @@ router.get('/getNextTutorial', authMiddleware, async (req, res) => {
       case 0:
         nextTutorial = {
           tutorialId: tutorial.tutorialId,
+          name: tutorial.name,
           video: tutorial.videos.easy,
           quiz: tutorial.quizes.easy,
         };
@@ -100,6 +130,8 @@ router.get('/getNextTutorial', authMiddleware, async (req, res) => {
       case 1:
         nextTutorial = {
           tutorialId: tutorial.tutorialId,
+          name: tutorial.name,
+
           video: tutorial.videos.medium,
           quiz: tutorial.quizes.medium,
         };
@@ -107,6 +139,7 @@ router.get('/getNextTutorial', authMiddleware, async (req, res) => {
       case 2:
         nextTutorial = {
           tutorialId: tutorial.tutorialId,
+          name: tutorial.name,
           video: tutorial.videos.hard,
           quiz: tutorial.quizes.hard,
         };

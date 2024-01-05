@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 
+// const quizSchema = new mongoose.Schema({
+//   questions: [{ type: String, required: true }],
+//   answers: [{ type: String, required: true }],
+// });
+
 const quizSchema = new mongoose.Schema({
-  questions: [{ type: String, required: true }],
+  question: { type: String, required: true },
   answers: [{ type: String, required: true }],
+  correctAnswer: { type: Number, required: true },
 });
 
 const levelSchema = new mongoose.Schema({
@@ -13,12 +19,24 @@ const levelSchema = new mongoose.Schema({
 
 const tutorialSchema = new mongoose.Schema({
   videos: { type: levelSchema, required: true },
+  // quizes: {
+  //   easy: { type: quizSchema, required: true },
+  //   medium: { type: quizSchema, required: true },
+  //   hard: { type: quizSchema, required: true },
+  // },
   quizes: {
-    easy: { type: quizSchema, required: true },
-    medium: { type: quizSchema, required: true },
-    hard: { type: quizSchema, required: true },
+    easy: {
+      questions: [{ type: quizSchema, required: true }],
+    },
+    medium: {
+      questions: [{ type: quizSchema, required: true }],
+    },
+    hard: {
+      questions: [{ type: quizSchema, required: true }],
+    },
   },
   tutorialId: { type: Number, required: true },
+  name: { type: String, required: true },
 }, { collection: 'tutorials' });
 
 const Tutorial = mongoose.model('Tutorial', tutorialSchema);
